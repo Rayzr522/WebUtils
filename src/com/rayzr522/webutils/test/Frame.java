@@ -7,10 +7,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,6 +30,7 @@ public class Frame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+
 		EventQueue.invokeLater(new Runnable() {
 
 			public void run() {
@@ -59,59 +58,21 @@ public class Frame {
 		if (url == null || url.isEmpty()) { return; }
 
 		HTTPRequest req = HTTPRequest.get(url);
-		
+
 		if (!req.isValid()) {
 			System.err.println("Request is not valid");
 			return;
 		}
-		
+
 		System.out.println("req.getFileName() = " + req.getFileName());
 
 		String extension = FilesUtils.getExtension(req.getFileName());
-		
-		String[] useableExtensions = {
-			"jar", "zip", "java", "txt", "js"
-		};
 
-		boolean isValidFile = false;
+		List<String> useableExtensions = Arrays.asList("jar", "zip", "java", "txt", "js");
 
-		for (String useable : useableExtensions) {
-			if (useable.equals(extension)) {
-				isValidFile = true;
-			}
-		}
+		if (useableExtensions.contains(extension)) {
 
-		if (isValidFile) {
-
-			try {
-
-				InputStream is = req.getInputStream();
-
-				File outFile = new File("/Users/PeterBlood/Desktop/" + req.getFileName());
-
-				outFile.createNewFile();
-
-				OutputStream os = new FileOutputStream(outFile);
-
-				int next = is.read();
-
-				while (next != -1) {
-
-					os.write(next);
-
-					next = is.read();
-
-				}
-
-				os.close();
-				is.close();
-
-			} catch (Exception e) {
-
-				e.printStackTrace();
-				System.out.println("Failed to download file");
-
-			}
+			// Downloader.downloadFile(req, new File(System.getPropr))
 
 		}
 
