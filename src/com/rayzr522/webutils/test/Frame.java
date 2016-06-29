@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +19,9 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import com.rayzr522.webutils.net.Downloader;
 import com.rayzr522.webutils.net.HTTPRequest;
+import com.rayzr522.webutils.system.SystemProperties;
 import com.rayzr522.webutils.utils.FilesUtils;
 
 public class Frame {
@@ -67,12 +70,14 @@ public class Frame {
 		System.out.println("req.getFileName() = " + req.getFileName());
 
 		String extension = FilesUtils.getExtension(req.getFileName());
+		
+		System.out.println("extension = " + extension);
 
 		List<String> useableExtensions = Arrays.asList("jar", "zip", "java", "txt", "js");
 
 		if (useableExtensions.contains(extension)) {
 
-			// Downloader.downloadFile(req, new File(System.getPropr))
+			Downloader.downloadFileToFolder(req, new File(SystemProperties.home() + "/WebUtils/"));
 
 		}
 

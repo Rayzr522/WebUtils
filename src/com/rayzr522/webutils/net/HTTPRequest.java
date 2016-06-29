@@ -25,7 +25,7 @@ public class HTTPRequest {
 			return req;
 		}
 
-//		conn.setReadTimeout(60000);
+		// conn.setReadTimeout(60000);
 
 		if (!conn.getHeaderField(0).toString().endsWith("200 OK")) {
 
@@ -48,6 +48,14 @@ public class HTTPRequest {
 			String[] seperatedPath = conn.getURL().getPath().split("/");
 			fileName = seperatedPath[seperatedPath.length - 1];
 
+		}
+
+		if (fileName.startsWith("\"")) {
+			fileName = fileName.substring(1, fileName.length());
+		}
+
+		if (fileName.endsWith("\"")) {
+			fileName = fileName.substring(0, fileName.length() - 1);
 		}
 
 		req.conn = conn;
