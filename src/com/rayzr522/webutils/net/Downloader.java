@@ -9,19 +9,19 @@ import java.io.OutputStream;
 public class Downloader {
 
 	public static boolean downloadFile(HTTPRequest req, File outFile) {
-		
+
 		if (!req.isValid()) {
-			
+
 			System.err.println("Tried to download file with invalid HTTPRequest");
-			
+
 			return false;
-			
+
 		}
 
 		try {
 
 			InputStream is = req.getInputStream();
-			
+
 			outFile.createNewFile();
 
 			OutputStream os = new FileOutputStream(outFile);
@@ -38,17 +38,25 @@ public class Downloader {
 
 			os.close();
 			is.close();
-			
+
 			return true;
 
 		} catch (Exception e) {
 
 			System.err.println("Failed to download '" + req.getFileName() + "' file.");
 			e.printStackTrace();
-			
+
 			return false;
 
 		}
+
+	}
+
+	public static boolean downloadFileToFolder(HTTPRequest req, File outputFolder) {
+
+		if (!outputFolder.isDirectory()) { return downloadFile(req, outputFolder); }
+
+		return downloadFile(req, new File(outputFolder, req.getFileName()));
 
 	}
 
