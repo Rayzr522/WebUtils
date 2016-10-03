@@ -1,0 +1,14 @@
+.root {
+    -fx-font-size: 12pt;
+    -fx-font-family: "Arial";
+    -fx-base: rgb(169, 209, 230);
+    -fx-background: rgb(215, 215, 215);
+}
+
+
+#welcome-text {
+    -fx-font-size: 24pt;
+    -fx-font-weight: bold;
+    -fx-fill: #555;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
