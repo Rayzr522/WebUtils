@@ -8,56 +8,58 @@ import java.io.OutputStream;
 
 public class Downloader {
 
-	public static boolean downloadFile(HTTPRequest req, File outFile) {
+    public static boolean downloadFile(HTTPRequest req, File outFile) {
 
-		if (!req.isValid()) {
+        if (!req.isValid()) {
 
-			System.err.println("Tried to download file with invalid HTTPRequest");
+            System.err.println("Tried to download file with invalid HTTPRequest");
 
-			return false;
+            return false;
 
-		}
+        }
 
-		try {
+        try {
 
-			InputStream is = req.getInputStream();
+            InputStream is = req.getInputStream();
 
-			outFile.createNewFile();
+            outFile.createNewFile();
 
-			OutputStream os = new FileOutputStream(outFile);
+            OutputStream os = new FileOutputStream(outFile);
 
-			int next = is.read();
+            int next = is.read();
 
-			while (next != -1) {
+            while (next != -1) {
 
-				os.write(next);
+                os.write(next);
 
-				next = is.read();
+                next = is.read();
 
-			}
+            }
 
-			os.close();
-			is.close();
+            os.close();
+            is.close();
 
-			return true;
+            return true;
 
-		} catch (Exception e) {
+        } catch (Exception e) {
 
-			System.err.println("Failed to download '" + req.getFileName() + "' file.");
-			e.printStackTrace();
+            System.err.println("Failed to download '" + req.getFileName() + "' file.");
+            e.printStackTrace();
 
-			return false;
+            return false;
 
-		}
+        }
 
-	}
+    }
 
-	public static boolean downloadFileToFolder(HTTPRequest req, File outputFolder) {
+    public static boolean downloadFileToFolder(HTTPRequest req, File outputFolder) {
 
-		if (!outputFolder.isDirectory()) { return downloadFile(req, outputFolder); }
+        if (!outputFolder.isDirectory()) {
+            return downloadFile(req, outputFolder);
+        }
 
-		return downloadFile(req, new File(outputFolder, req.getFileName()));
+        return downloadFile(req, new File(outputFolder, req.getFileName()));
 
-	}
+    }
 
 }

@@ -9,93 +9,93 @@ import java.net.URL;
 public class HTTPRequest {
 
     private HttpURLConnection conn;
-    private boolean valid = false;
-    private String fileName = "";
+    private boolean           valid    = false;
+    private String            fileName = "";
 
     public static HTTPRequest get(URL url) {
 
-	HTTPRequest req = new HTTPRequest();
+        HTTPRequest req = new HTTPRequest();
 
-	HttpURLConnection conn;
+        HttpURLConnection conn;
 
-	try {
-	    conn = (HttpURLConnection) url.openConnection();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	    return req;
-	}
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return req;
+        }
 
-	// conn.setReadTimeout(60000);
+        // conn.setReadTimeout(60000);
 
-	if (!conn.getHeaderField(0).toString().endsWith("200 OK")) {
+        if (!conn.getHeaderField(0).toString().endsWith("200 OK")) {
 
-	    System.err.println("Invalid URL: " + url.toString());
-	    return req;
+            System.err.println("Invalid URL: " + url.toString());
+            return req;
 
-	}
+        }
 
-	String fileName = "";
+        String fileName = "";
 
-	String raw = conn.getHeaderField("Content-Disposition");
+        String raw = conn.getHeaderField("Content-Disposition");
 
-	// raw = "attachment; filename=abc.jpg"
-	if (raw != null && raw.indexOf("=") != -1) {
+        // raw = "attachment; filename=abc.jpg"
+        if (raw != null && raw.indexOf("=") != -1) {
 
-	    fileName = raw.split("=")[1]; // getting value after '='
+            fileName = raw.split("=")[1]; // getting value after '='
 
-	} else {
+        } else {
 
-	    String[] seperatedPath = conn.getURL().getPath().split("/");
-	    fileName = seperatedPath[seperatedPath.length - 1];
+            String[] seperatedPath = conn.getURL().getPath().split("/");
+            fileName = seperatedPath[seperatedPath.length - 1];
 
-	}
+        }
 
-	if (fileName.startsWith("\"")) {
-	    fileName = fileName.substring(1, fileName.length());
-	}
+        if (fileName.startsWith("\"")) {
+            fileName = fileName.substring(1, fileName.length());
+        }
 
-	if (fileName.endsWith("\"")) {
-	    fileName = fileName.substring(0, fileName.length() - 1);
-	}
+        if (fileName.endsWith("\"")) {
+            fileName = fileName.substring(0, fileName.length() - 1);
+        }
 
-	req.conn = conn;
-	req.fileName = fileName;
-	req.valid = true;
+        req.conn = conn;
+        req.fileName = fileName;
+        req.valid = true;
 
-	return req;
+        return req;
 
     }
 
     public static HTTPRequest get(String url) {
 
-	try {
+        try {
 
-	    return get(new URL(url));
+            return get(new URL(url));
 
-	} catch (Exception e) {
+        } catch (Exception e) {
 
-	    System.err.println("Failed to get URL for '" + url + "'");
-	    e.printStackTrace();
-	    return new HTTPRequest();
+            System.err.println("Failed to get URL for '" + url + "'");
+            e.printStackTrace();
+            return new HTTPRequest();
 
-	}
+        }
 
     }
 
     public HttpURLConnection getConn() {
-	return conn;
+        return conn;
     }
 
     public boolean isValid() {
-	return valid;
+        return valid;
     }
 
     public String getFileName() {
-	return fileName;
+        return fileName;
     }
 
     public InputStream getInputStream() throws IOException {
-	return conn.getInputStream();
+        return conn.getInputStream();
     }
 
 }
